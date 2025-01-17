@@ -1,0 +1,171 @@
+<section>
+    <h1>Post a Job</h1> <br><br>
+    <form action="/job/jobPostForm" method="POST" id="jobPostingForm">
+        <div class="form-group">
+            <label for="jobTitle">Job Title*</label>
+            <input type="text" id="jobTitle" name="jobTitle" required>
+            <span class="error-message" id="jobTitle-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="companyName">Company Name*</label>
+            <input type="text" id="companyName" name="companyName" required>
+            <span class="error-message" id="companyName-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="industry">Industry*</label>
+            <select id="industry" name="industry" required>
+                <option value="">Select an industry</option>
+                <option value="technology">Technology</option>
+                <option value="healthcare">Healthcare</option>
+                <option value="finance">Finance</option>
+                <option value="education">Education</option>
+                <option value="manufacturing">Manufacturing</option>
+                <option value="retail">Retail</option>
+                <option value="other">Other</option>
+            </select>
+            <span class="error-message" id="industry-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="jobType">Job Type*</label>
+            <select id="jobType" name="jobType" required>
+                <option value="">Select job type</option>
+                <option value="Full-time">Full-time</option>
+                <option value="Part-time">Part-time</option>
+                <option value="Contract">Contract</option>
+                <option value="Temporary">Temporary</option>
+                <option value="Internship">Internship</option>
+                <option value="Remote">Remote</option>
+            </select>
+            <span class="error-message" id="jobType-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="location">Location*</label>
+            <input type="text" id="location" name="location" required>
+            <span class="error-message" id="location-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="salaryRange">Salary Range</label>
+            <div class="password-input">
+                <input type="text" id="salaryRange" name="salaryRange" placeholder="e.g., $50,000 - $70,000 per year">
+                <span id="salary-toggle-visibility" class="password-toggle">👁️</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="jobDescription">Job Description*</label>
+            <textarea id="jobDescription" name="jobDescription" rows="4" required></textarea>
+            <span class="error-message" id="jobDescription-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="responsibilities">Key Responsibilities*</label>
+            <textarea id="responsibilities" name="responsibilities" rows="4" required></textarea>
+            <span class="error-message" id="responsibilities-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="requiredSkills">Required Skills*</label>
+            <textarea id="requiredSkills" name="requiredSkills" rows="4" required></textarea>
+            <span class="error-message" id="requiredSkills-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="keywords">Keywords (comma-separated)*</label>
+            <input type="text" id="keywords" name="keywords" placeholder="e.g., JavaScript, Remote, SQL" required>
+            <span class="error-message" id="keywords-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="expiryDate">Expiry Date*</label>
+            <input type="date" id="expiryDate" name="expiryDate" required>
+            <span class="error-message" id="expiryDate-error"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Post Job</button>
+    </form>
+</section>
+
+<!--
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('jobPostingForm');
+        const salaryToggle = document.getElementById('salary-toggle-visibility');
+        const salaryInput = document.getElementById('salaryRange');
+
+        // Toggle salary visibility
+        salaryToggle.addEventListener('click', function () {
+            const isVisible = salaryInput.getAttribute('type') === 'text';
+            salaryInput.setAttribute('type', isVisible ? 'password' : 'text');
+            this.textContent = isVisible ? '👁️' : '🙈';
+        });
+
+        // Form submit handler
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            if (validateForm()) {
+                const formData = new FormData(form);
+                const jobData = Object.fromEntries(formData.entries());
+
+                try {
+                    const response = await fetch(form.action, {
+                        method: form.method,
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(jobData),
+                    });
+
+                    const result = await response.json();
+                    if (response.ok) {
+                        alert("Job posted successfully!");
+                        form.reset();
+                    } else {
+                        alert(result.message || "An error occurred while posting the job.");
+                    }
+                } catch (error) {
+                    console.error("Error submitting form:", error);
+                    alert("Failed to post the job. Please try again.");
+                }
+            }
+        });
+
+        // Field validation
+        function validateForm() {
+            let isValid = true;
+
+            const requiredFields = [
+                "jobTitle",
+                "companyName",
+                "industry",
+                "jobType",
+                "location",
+                "jobDescription",
+                "responsibilities",
+                "requiredSkills",
+                "keywords",
+                "expiryDate", // Added expiryDate for validation
+            ];
+
+            requiredFields.forEach((field) => {
+                const input = document.getElementById(field);
+                const errorMessage = document.getElementById(`${field}-error`);
+
+                if (input.value.trim() === "") {
+                    errorMessage.textContent = "This field is required.";
+                    input.classList.add("error-input");
+                    isValid = false;
+                } else {
+                    errorMessage.textContent = "";
+                    input.classList.remove("error-input");
+                }
+            });
+
+            return isValid;
+        }
+    });
+</script>
+-->

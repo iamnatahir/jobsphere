@@ -1,0 +1,114 @@
+<!--views/job/jobDetails.ejs-->
+<style>
+    .job-details {
+        background-color: var(--card-bg);
+        border-radius: 1rem;
+        padding: 2rem;
+        margin-top: 2rem;
+        color: #1a1a1a;
+    }
+
+    .job-details .company-logo {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 1rem;
+    }
+
+    .job-details .company-name {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .job-details .job-meta {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .job-details h3 {
+        font-size: 1.25rem;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .job-details ul {
+        list-style-type: disc;
+        margin-left: 1.5rem;
+    }
+
+    .apply-button {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        background-color: #ffd700;
+        color: #1a1a1a;
+        text-decoration: none;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin-top: 2rem;
+        transition: background-color 0.2s;
+    }
+
+    .apply-button:hover {
+        background-color: #ffc700;
+    }
+
+    @media (max-width: 768px) {
+        .job-details {
+            padding: 1.5rem;
+        }
+
+        .job-details .job-meta {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+<nav class="navbar">
+
+    <div class="nav-links">
+        <a href="/job/viewJob" style="font-size: large;">All Jobs</a>
+    </div>
+</nav>
+<br>
+<div class="container">
+    <h1 class="page-title">
+        <%= job.jobTitle %>
+    </h1>
+    <div class="job-details" style="background-color: white; color: black;">
+        <img src="/images/rocket-icon.svg" alt="<%= job.companyName %> Logo" class="company-logo">
+        <p><strong>Company:</strong>
+            <%= job.companyName %>
+        </p>
+        <div class="job-meta">
+            <p><strong>Location:</strong>
+                <%= job.location %>
+            </p>
+            <p><strong>Type:</strong>
+                <%= job.jobType %>
+            </p>
+            <p><strong>Industry:</strong>
+                <%= job.industry %>
+            </p>
+        </div>
+        <div class="job-description">
+            <h3>Job Description</h3>
+            <p>
+                <%= job.jobDescription %>
+            </p>
+        </div>
+        <div class="job-responsibilities">
+            <h3>Responsibilities</h3>
+            <p>
+                <%=job.responsibilities %>
+            </p>
+        </div>
+        <div class="required-skills">
+            <h3>Required Skills</h3>
+            <p>
+                <%=job.requiredSkills%>
+            </p>
+            </ul>
+        </div>
+    </div>
+</div>

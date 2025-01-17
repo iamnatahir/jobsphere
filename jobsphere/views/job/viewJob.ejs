@@ -1,0 +1,487 @@
+<script>
+    // Safely pass the user ID from EJS to JavaScript
+    const userId = '<%= user && user._id ? user._id : "" %>';
+</script>
+<style>
+    :root {
+        --primary-text: #ffffff;
+        --secondary-text: #94a3b8;
+        --accent-color: #818cf8;
+        --card-bg: #ffffff;
+        --page-bg: #020817;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: system-ui, -apple-system, sans-serif;
+        background-color: var(--page-bg);
+        color: var(--primary-text);
+    }
+
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+        background-color: rgba(2, 8, 23, 0.95);
+    }
+
+    .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-text);
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 2rem;
+    }
+
+    .nav-links a {
+        color: var(--primary-text);
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .page-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 2rem;
+    }
+
+    .jobs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .job-card {
+        background-color: var(--card-bg);
+        border-radius: 1rem;
+        padding: 1.5rem;
+        transition: transform 0.2s;
+    }
+
+    .job-card:hover {
+        transform: translateY(-4px);
+    }
+
+    .company-logo {
+        width: 48px;
+        height: 48px;
+        margin-bottom: 1rem;
+    }
+
+    .job-title {
+        color: #1a1a1a;
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .company-name {
+        color: #666;
+        font-size: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .view-details {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background-color: #ffd700;
+        color: #1a1a1a;
+        text-decoration: none;
+        text-align: center;
+        border-radius: 0.5rem;
+        font-weight: 500;
+        transition: background-color 0.2s;
+        height: 50px;
+    }
+
+    .view-details:hover {
+        background-color: #ffc700;
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 1rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+        }
+
+        .jobs-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Search form styles */
+    .search-form {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        background-color: var(--input-bg);
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+    }
+
+    .search-form label {
+        font-size: 1rem;
+        color: var(--secondary-text);
+        font-weight: 500;
+    }
+
+    .search-form input {
+        padding: 0.75rem 1rem;
+        border: 1px solid beige;
+        border-radius: 0.5rem;
+        background-color: var(--input-bg);
+        color: var(--input-text-color);
+        width: 300px;
+        transition: all 0.3s;
+    }
+
+    .search-form input:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        box-shadow: 0 0 5px rgba(129, 140, 248, 0.7);
+    }
+
+    .search-form button {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 0.5rem;
+        background-color: var(--accent-color);
+        color: var(--primary-text);
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .search-form button:hover {
+        background-color: #3b43f0;
+    }
+
+    .search-form input {
+        width: 100%;
+    }
+
+    .modal {
+        display: none;
+        /* Hidden by default */
+        position: fixed;
+        /* Stay in place */
+        z-index: 0;
+        /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%;
+        /* Full width */
+        height: 100%;
+        /* Full height */
+        overflow: auto;
+        /* Enable scroll if needed */
+        background-color: rgba(0, 0, 0, 0.5);
+        /* Black background with opacity */
+    }
+
+    .modal-content {
+        background-color: var(--secondary-bg);
+        margin: 10% auto;
+        /* 10% from top and centered */
+        padding: 2rem;
+        border-radius: 0.5rem;
+        width: 60%;
+        /* Could be more or less, depending on screen size */
+        height: 75%;
+        max-width: 73%;
+        overflow-y: scroll;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+    }
+
+    .modal-content h2 {
+        font-size: 1.75rem;
+        margin-bottom: 1rem;
+        color: var(--primary-text);
+    }
+
+    .modal-content label {
+        display: grid;
+        margin-bottom: 0.5rem;
+        color: var(--primary-text);
+        font-weight: 600;
+    }
+
+    .modal-content input,
+    .modal-content textarea {
+        display: inline;
+        width: 100%;
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+        border: 1px solid #555;
+        /* Dark border */
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        font-family: inherit;
+        background: var(--secondary-bg);
+        /* Input background */
+        color: var(--primary-text);
+        /* Input text color */
+    }
+
+    .modal-content input:focus,
+    .modal-content textarea:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.3);
+    }
+
+    .modal-content button {
+        display: block;
+        background-color: var(--accent-color);
+        color: var(--primary-text);
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .modal-content button:hover {
+        background-color: #6b76e1;
+    }
+
+    .close {
+        color: var(--primary-text);
+        font-size: 1.5rem;
+        font-weight: 700;
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        cursor: pointer;
+    }
+
+    .error-message {
+        color: red;
+        font-size: 0.875rem;
+        margin-top: -0.5rem;
+        margin-bottom: 1rem;
+        display: block;
+    }
+
+    .error-input {
+        border-color: red;
+    }
+
+
+    .close {
+        align-self: flex-end;
+        cursor: pointer;
+    }
+</style>
+
+<div class="container">
+    <h1 class="page-title">Explore All Jobs</h1>
+ <!-- Search form -->
+ <form action="/job/viewJob" method="GET" class="search-form">
+    <label for="SearchQuery">Search</label>
+    <input type="text" name="searchQuery" id="SearchQuery" value="<%= searchQuery || '' %>">
+    <button type="submit">Search</button>
+</form>
+<div class="jobs-grid">
+    <% if (jobs.length> 0) { %>
+        <% jobs.forEach(job=> { %>
+            <div class="job-card">
+                <img src="/images/rocket-icon.svg" alt="Company Logo" class="company-logo">
+                <h2 class="job-title">
+                    <%= job.jobTitle %>
+                </h2>
+                <p class="company-name">
+                    <%= job.companyName %>
+                </p>
+                <div class="job-meta">
+                    <p>
+                        <%= job.location %>
+                    </p>
+                    <p>Type: <%= job.jobType %>
+                    </p>
+                    <p>Industry: <%= job.industry %>
+                    </p>
+                    <p>Salary: <%= job.salary || 'Negotiable' %>
+                    </p>
+                </div>
+                <div style="display: flex; justify-content: space-between; height: 50px;">
+                    <a href="/job/<%= job._id %>" class="view-details" style="margin-bottom: 10px; ">View
+                        Details</a>
+                    <button class="btn btn-secondary chat-now" data-job-id="<%= job._id %>"
+                        data-employer-id="<%= job.postedBy %>">
+                        Chat
+                    </button>
+
+                </div>
+
+                <br>
+                <button class="btn btn-primary apply-now" data-job-id="<%= job._id %>">Apply Now</button>
+                <!-- Add Chat Button -->
+
+            </div>
+            <% }); %>
+                <% } else { %>
+                    <p>No jobs available at the moment. Please check back later!</p>
+                    <% } %>
+</div>
+<!--view/job/viewJob-->
+<div id="chatModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Chat with Employer</h2>
+        <div id="chatMessages"></div>
+        <div id="typingIndicator"></div>
+        <input type="text" id="chatInput" placeholder="Type a message...">
+        <button id="sendMessage">Send</button>
+    </div>
+</div>
+<!-- Application Modal Form -->
+<!-- Application Modal Form -->
+<div id="applicationFormModal" class="modal">
+    <div class="modal-content">
+        <span id="closeModal" class="close">&times;</span>
+        <h2>Application Form</h2>
+        <form id="applicationForm" action="/application/post" method="post">
+            <!-- Hidden jobId field -->
+            <input type="hidden" id="jobId" name="jobId">
+            
+            <!-- Name -->
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Enter your name" required>
+            <span id="name-error" class="error-message"></span>
+        
+            <!-- Email -->
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            <span id="email-error" class="error-message"></span>
+        
+            <!-- Phone -->
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+            <span id="phone-error" class="error-message"></span>
+        
+            <!-- Address -->
+            <label for="address">Address</label>
+            <input type="text" id="address" name="address" placeholder="Enter your address" required>
+            <span id="address-error" class="error-message"></span>
+        
+            <!-- Cover Letter -->
+            <label for="coverLetter">Cover Letter</label>
+            <textarea id="coverLetter" name="coverLetter" rows="5" placeholder="Write your cover letter here" required></textarea>
+            <span id="coverLetter-error" class="error-message"></span>
+        
+            <!-- Submit Button -->
+            <button type="submit">Submit Application</button>
+        </form>
+    </div>
+</div>
+
+<!-- Error Messages -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const modal = document.getElementById('applicationFormModal');
+        const applyButtons = document.querySelectorAll('.apply-now');
+        const closeModal = document.getElementById('closeModal');
+        const applicationForm = document.getElementById('applicationForm');
+        const jobIdField = document.getElementById('jobId');
+
+        applyButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const jobId = button.getAttribute('data-job-id');
+                jobIdField.value = jobId;
+                modal.style.display = 'block';
+            });
+        });
+
+        closeModal.addEventListener('click', function () {
+            modal.style.display = 'none';
+        });
+
+        window.addEventListener('click', function (event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        applicationForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    if (validateForm()) {
+        const formValues = {
+            name: document.getElementById('name').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            phone: document.getElementById('phone').value.trim(),
+            address: document.getElementById('address').value.trim(),
+            coverLetter: document.getElementById('coverLetter').value.trim(),
+            jobId: jobIdField.value,
+        };
+
+        try {
+            const response = await fetch(applicationForm.action, {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formValues),
+            });
+
+            const result = await response.json();
+
+
+            if (response.ok) {
+                alert(result.message || "Application submitted successfully!");
+                applicationForm.reset();
+                modal.style.display = 'none';
+            } else {
+                alert(result.message || "An error occurred while submitting the application.");
+            }
+        } catch (error) {
+            console.error("Error submitting form:", error);
+            alert("Failed to submit the application. Please try again.");
+        }
+    }
+});
+
+
+
+        function validateForm() {
+            let isValid = true;
+            const requiredFields = ["name", "email", "phone", "address", "coverLetter"];
+
+            requiredFields.forEach((field) => {
+                const input = document.getElementById(field);
+                const errorMessage = document.getElementById(`${field}-error`);
+
+                if (input.value.trim() === "") {
+                    errorMessage.textContent = "This field is required.";
+                    input.classList.add("error-input");
+                    isValid = false;
+                } else {
+                    errorMessage.textContent = "";
+                    input.classList.remove("error-input");
+                }
+            });
+
+            return isValid;
+        }
+    });
+</script>
+<!--view/job/viewjob-->
+<script src="/socket.io/socket.io.js"></script>
+<script src="/scripts/chat.js"></script>

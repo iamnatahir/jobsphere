@@ -1,0 +1,306 @@
+<!-- <style>
+  * {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  
+  }
+
+  h2 {
+    text-align: center;
+    margin: 20px auto;
+    padding-top: 20px;
+   
+  }
+  .table-container {
+    overflow-x: auto;
+    margin-top: 20px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    padding: 12px 16px;
+    border: 1px solid black;
+    text-align: left;
+  }
+
+  th {
+    background-color: #007BFF;
+    color: white;
+  }
+
+  tr:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.233);
+  }
+
+  .error {
+    text-align: center;
+    color: red;
+    margin-top: 20px;
+  }
+
+  .loading {
+    text-align: center;
+    color: #007BFF;
+    font-size: 18px;
+  }
+</style>
+
+<div class="container">
+  <h2>Applications for Your Posted Jobs</h2>
+  <div class="table-container">
+    <table id="applicationsTable" style="display: none;">
+      <thead>
+        <tr>
+          <th>Job Title</th>
+          <th>Applicant Name</th>
+          <th>Status</th>
+          <th>Date Applied</th>
+        </tr>
+      </thead>
+      <tbody id="applicationsBody"></tbody>
+    </table>
+  </div>
+  <div id="loading" class="loading">Loading applications...</div>
+  <div id="error" class="error" style="display: none;">Failed to load applications. Please try again.</div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    const table = document.getElementById('applicationsTable');
+    const tableBody = document.getElementById('applicationsBody');
+    const loadingIndicator = document.getElementById('loading');
+    const errorIndicator = document.getElementById('error');
+
+    try {
+      const token = localStorage.getItem('token'); // Assume JWT is stored here
+      const response = await fetch('/application/employer/getall', {
+        method: 'GET',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) throw new Error(data.message || "Unable to fetch applications.");
+
+      loadingIndicator.style.display = 'none';
+
+      if (data.applications.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="4" style="text-align: center;">No applications found.</td></tr>`;
+      } else {
+        data.applications.forEach(application => {
+          const job = application.jobId;
+
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${job?.jobTitle || 'N/A'}</td>
+            <td>${application.name || 'N/A'}</td>
+            <td>${application.status || 'Pending'}</td>
+            <td>${new Date(application.createdAt).toLocaleDateString()}</td>
+          `;
+          tableBody.appendChild(row);
+        });
+      }
+
+      table.style.display = 'table';
+    } catch (error) {
+      console.error("Error fetching applications:", error);
+      loadingIndicator.style.display = 'none';
+      errorIndicator.style.display = 'block';
+    }
+  });
+</script> -->
+
+<style>
+  * {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  h2 {
+    text-align: center;
+    margin: 20px auto;
+    padding-top: 20px;
+  }
+
+  .table-container {
+    overflow-x: auto;
+    margin-top: 20px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    padding: 12px 16px;
+    border: 1px solid black;
+    text-align: left;
+  }
+
+  th {
+    background-color: #007BFF;
+    color: white;
+  }
+
+  tr:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.233);
+  }
+
+  .error {
+    text-align: center;
+    color: red;
+    margin-top: 20px;
+  }
+
+  .loading {
+    text-align: center;
+    color: #007BFF;
+    font-size: 18px;
+  }
+
+  .change-status-btn {
+    /* background-color: #007BFF; */
+    background-color: #dc3545;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .change-status-btn:hover {
+    background-color: #0056b3;
+  }
+</style>
+
+<div class="container">
+  <h2>Applications for Your Posted Jobs</h2>
+  <div class="table-container">
+    <table id="applicationsTable" style="display: none;">
+      <thead>
+        <tr>
+          <th>Job Title</th>
+          <th>Applicant Name</th>
+          <th>Status</th>
+          <th>Date Applied</th>
+          <th>Change Status</th>
+        </tr>
+      </thead>
+      <tbody id="applicationsBody"></tbody>
+    </table>
+  </div>
+  <div id="loading" class="loading">Loading applications...</div>
+  <div id="error" class="error" style="display: none;">Failed to load applications. Please try again.</div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    const table = document.getElementById('applicationsTable');
+    const tableBody = document.getElementById('applicationsBody');
+    const loadingIndicator = document.getElementById('loading');
+    const errorIndicator = document.getElementById('error');
+
+    try {
+      const token = localStorage.getItem('token'); // Assume JWT is stored here
+      const response = await fetch('/application/employer/getall', {
+        method: 'GET',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) throw new Error(data.message || "Unable to fetch applications.");
+
+      loadingIndicator.style.display = 'none';
+
+      if (data.applications.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center;">No applications found.</td></tr>`;
+      } else {
+        data.applications.forEach(application => {
+          const job = application.jobId;
+
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${job?.jobTitle || 'N/A'}</td>
+            <td>${application.name || 'N/A'}</td>
+            <td>${application.status || 'Pending'}</td>
+            <td>${new Date(application.createdAt).toLocaleDateString()}</td>
+            <td>
+              <button class="change-status-btn" data-id="${application._id}" data-current-status="${application.status || 'Pending'}">
+                Change Status
+              </button>
+            </td>
+          `;
+          tableBody.appendChild(row);
+        });
+      }
+
+      table.style.display = 'table';
+    } catch (error) {
+      console.error("Error fetching applications:", error);
+      loadingIndicator.style.display = 'none';
+      errorIndicator.style.display = 'block';
+    }
+  });
+
+  // Handle change status button click
+  document.body.addEventListener('click', async (e) => {
+    if (e.target.classList.contains('change-status-btn')) {
+      const applicationId = e.target.getAttribute('data-id');
+      const currentStatus = e.target.getAttribute('data-current-status');
+      
+      // Prompt employer to select a new status
+      const newStatus = prompt("Enter new status (Pending, Accepted, Rejected):", currentStatus);
+      
+      if (newStatus && ['Pending', 'Accepted', 'Rejected'].includes(newStatus)) {
+        await updateApplicationStatus(applicationId, newStatus);
+      } else {
+        alert("Invalid status! Please enter 'Pending', 'Accepted', or 'Rejected'.");
+      }
+    }
+  });
+
+  // Update the application status
+  async function updateApplicationStatus(applicationId, newStatus) {
+    try {
+      const token = localStorage.getItem('token'); // Get the token from localStorage
+      const response = await fetch(`/application/update/status/${applicationId}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: newStatus }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) throw new Error(data.message || "Failed to update status.");
+
+      alert(data.message);
+      location.reload(); // Reload the page to show the updated status
+    } catch (error) {
+      console.error("Error updating status:", error);
+      alert("Failed to update application status.");
+    }
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,45 @@
+<style>
+    h1 {
+        text-align: center;
+        margin: 20px;
+        color: #ffffff;
+    }
+    .table {
+        color: #ffffff;
+        text-align: center;
+    }
+    .table-dark {
+        background-color: #343a40;
+    }
+    .table-dark th,
+    .table-dark td {
+        border-color: #454d55;
+        vertical-align: middle;
+    }
+</style>
+
+<h1>Top Trending Jobs</h1>
+<table class="table table-dark table-striped">
+  <thead>
+    <tr>
+      <th class="text-center">Job Title</th>
+      <th class="text-center">Company Name</th>
+      <th class="text-center">Number of Applications</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if (trendingJobs.length > 0) { %>
+      <% trendingJobs.forEach(function(job) { %>
+        <tr>
+          <td><%= job.title %></td>
+          <td><%= job.company %></td>
+          <td><%= job.count %></td>
+        </tr>
+      <% }); %>
+    <% } else { %>
+      <tr>
+        <td colspan="3">No trending jobs found.</td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>

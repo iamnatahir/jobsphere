@@ -1,0 +1,85 @@
+<section>
+    <h1>Update Job</h1> <br><br>
+    <form action="/job/update/<%= job.id %>" method="PUT"> 
+        <div class="form-group">
+            <label for="jobTitle">Job Title*</label>
+            <input type="text" id="jobTitle" name="jobTitle" value="<%= job.jobTitle %>" required>
+            <span class="error-message" id="jobTitle-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="companyName">Company Name*</label>
+            <input type="text" id="companyName" name="companyName" value="<%= job.companyName %>" required>
+            <span class="error-message" id="companyName-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="industry">Industry*</label>
+            <select id="industry" name="industry" required>
+                <option value="">Select an industry</option>
+                <option value="technology" <%= job.industry === 'technology' ? 'selected' : '' %>>Technology</option>
+                <option value="healthcare" <%= job.industry === 'healthcare' ? 'selected' : '' %>>Healthcare</option>
+                <option value="finance" <%= job.industry === 'finance' ? 'selected' : '' %>>Finance</option>
+                <option value="education" <%= job.industry === 'education' ? 'selected' : '' %>>Education</option>
+                <option value="manufacturing" <%= job.industry === 'manufacturing' ? 'selected' : '' %>>Manufacturing</option>
+                <option value="retail" <%= job.industry === 'retail' ? 'selected' : '' %>>Retail</option>
+                <option value="other" <%= job.industry === 'other' ? 'selected' : '' %>>Other</option>
+            </select>
+            <span class="error-message" id="industry-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="jobType">Job Type*</label>
+            <select id="jobType" name="jobType" required>
+                <option value="">Select job type</option>
+                <option value="Full-time" <%= job.jobType === 'Full-time' ? 'selected' : '' %>>Full-time</option>
+                <option value="Part-time" <%= job.jobType === 'Part-time' ? 'selected' : '' %>>Part-time</option>
+                <option value="Contract" <%= job.jobType === 'Contract' ? 'selected' : '' %>>Contract</option>
+                <option value="Temporary" <%= job.jobType === 'Temporary' ? 'selected' : '' %>>Temporary</option>
+                <option value="Internship" <%= job.jobType === 'Internship' ? 'selected' : '' %>>Internship</option>
+                <option value="Remote" <%= job.jobType === 'Remote' ? 'selected' : '' %>>Remote</option>
+            </select>
+            <span class="error-message" id="jobType-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="location">Location*</label>
+            <input type="text" id="location" name="location" value="<%= job.location %>" required>
+            <span class="error-message" id="location-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="salaryRange">Salary Range</label>
+            <div class="password-input">
+                <input type="text" id="salaryRange" name="salaryRange" value="<%= job.salaryRange %>" placeholder="e.g., $50,000 - $70,000 per year">
+                <span id="salary-toggle-visibility" class="password-toggle">👁️</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="jobDescription">Job Description*</label>
+            <textarea id="jobDescription" name="jobDescription" rows="4" required><%= job.jobDescription %></textarea>
+            <span class="error-message" id="jobDescription-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="responsibilities">Key Responsibilities*</label>
+            <textarea id="responsibilities" name="responsibilities" rows="4" required><%= job.responsibilities %></textarea>
+            <span class="error-message" id="responsibilities-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="requiredSkills">Required Skills*</label>
+            <textarea id="requiredSkills" name="requiredSkills" rows="4" required><%= job.requiredSkills %></textarea>
+            <span class="error-message" id="requiredSkills-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="keywords">Keywords (comma-separated)*</label>
+            <input type="text" id="keywords" name="keywords" value="<%= job.keywords %>" placeholder="e.g., JavaScript, Remote, SQL" required>
+            <span class="error-message" id="keywords-error"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Job</button>
+    </form>
+</section>

@@ -1,0 +1,181 @@
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles/admin-dashboard-stats.css">
+<style>
+  :root {
+    --primary-bg: #1d1f26;
+    --secondary-bg: #121417;
+    --primary-text: #e0e0e0;
+    --secondary-text: #b0b0b0;
+    --accent-color: #04fcfc;
+    --card-bg: #2c2f38;
+    --card-shadow: rgba(0, 0, 0, 0.2);
+    --card-shadow-hover: rgba(0, 0, 0, 0.25);
+    --border-radius: 1rem;
+}
+
+body {
+    background-color: var(--primary-bg);
+    color: var(--primary-text);
+    font-family: 'Poppins', sans-serif;
+}
+
+.dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: var(--secondary-bg);
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.dashboard-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-text);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.dashboard-header p {
+    font-size: 1.25rem;
+    color: var(--secondary-text);
+    opacity: 0.9;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.dashboard-card {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px var(--card-shadow);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px var(--card-shadow-hover);
+    border-color: var(--accent-color);
+}
+
+.dashboard-card h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 0.5rem;
+}
+
+.dashboard-card p {
+    color: var(--secondary-text);
+    margin-bottom: 1rem;
+    opacity: 0.8;
+}
+
+.dashboard-card h3 {
+    font-size: 2rem;
+    color: var(--primary-text);
+    margin-bottom: 0.5rem;
+}
+
+.industry-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+    .dashboard-header h1 {
+        font-size: 2rem;
+    }
+
+    .dashboard-header p {
+        font-size: 1rem;
+    }
+
+    .dashboard-card h2 {
+        font-size: 1.25rem;
+    }
+}
+
+
+</style>
+<div class="dashboard">
+  <div class="dashboard-header">
+      <h1>Admin Dashboard Stats</h1>
+      <p>Overview of key metrics and trends</p>
+  </div>
+  <div class="dashboard-grid">
+      <!-- Total Users -->
+      <div class="dashboard-card">
+          <h2>Total Users</h2>
+          <h3><%= totalUsers %></h3>
+      </div>
+
+      <!-- Total Jobs -->
+      <div class="dashboard-card">
+          <h2>Total Jobs</h2>
+          <h3><%= totalJobs %></h3>
+      </div>
+
+      <!-- Total Applications -->
+      <div class="dashboard-card">
+          <h2>Total Applications</h2>
+          <h3><%= totalApplications %></h3>
+      </div>
+
+      <!-- Trending Job -->
+      <div class="dashboard-card">
+          <h2>Trending Job</h2>
+          <% if (mostAppliedJob) { %>
+              <h3><%= mostAppliedJob.title %></h3>
+          <% } else { %>
+              <p>No applications yet.</p>
+          <% } %>
+      </div>
+
+      <!-- Trending Job Company -->
+      <div class="dashboard-card">
+          <h2>Trending Job Company</h2>
+          <% if (mostAppliedJob) { %>
+              <h3><%= mostAppliedJob.companyName %></h3>
+          <% } else { %>
+              <p>No applications yet.</p>
+          <% } %>
+      </div>
+
+      <!-- Applications Count for Most Applied Job -->
+      <div class="dashboard-card">
+          <h2>Trending Job Applicant</h2>
+          <% if (mostAppliedJob) { %>
+              <h3><%= mostAppliedJob.count %></h3>
+          <% } else { %>
+              <p>No applications yet.</p>
+          <% } %>
+      </div>
+  </div>
+
+  <!-- Job Count by Industry -->
+  <div class="industry-grid">
+      <% jobsByIndustry.forEach((industry) => { %>
+          <div class="dashboard-card">
+              <h2>Jobs in <%= industry._id %></h2>
+              <h3><%= industry.count %></h3>
+          </div>
+      <% }); %>
+  </div>
+</div>

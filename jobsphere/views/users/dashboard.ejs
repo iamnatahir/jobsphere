@@ -1,0 +1,35 @@
+<% if (successMessage.length > 0) { %>
+    <div class="flash-message success">
+        <%= successMessage %>
+    </div>
+<% } %>
+<% if (errorMessage.length) { %>
+    <div class="flash-message error">
+        <%= errorMessage %>
+    </div>
+<% } %>
+  
+<div class="dashboard">
+  <div class="dashboard-header">
+      <h1>Dashboard</h1>
+      <p>Welcome back! Here's an overview of your job search journey.</p>
+  </div>
+  <div class="dashboard-grid">
+      <div class="dashboard-card">
+          <h2>Jobs Applied</h2>
+          <p>You've applied to 5 jobs this week.</p>
+          <a href="/viewAllApplications">View all applications</a>
+
+      </div>
+      <div class="dashboard-card">
+          <h2>Recommended Jobs</h2>
+          <p>We found 10 new jobs matching your profile.</p>
+          <a href="/recommended-jobs">Explore recommendations</a>
+      </div>
+      <div class="dashboard-card">
+          <h2>Profile Status</h2>
+          <p>Your profile is 80% complete.</p>
+          <a href="/profile">Complete your profile</a>
+      </div>
+  </div>
+</div>

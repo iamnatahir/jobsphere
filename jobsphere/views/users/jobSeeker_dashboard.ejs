@@ -1,0 +1,269 @@
+
+ <style>
+  /* Global Styles */
+:root {
+    --primary-bg: #1a1a1a;
+    --secondary-bg: #2c2c2c;
+    --primary-text: #ffffff;
+    --secondary-text: #b0b0b0;
+    --accent-color: #3498db;
+    --card-shadow: rgba(0, 0, 0, 0.3);
+    --card-shadow-hover: rgba(0, 0, 0, 0.5);
+    --border-radius: 0.5rem;
+}
+
+body {
+    background-color: var(--primary-bg);
+    color: var(--primary-text);
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Dashboard container */
+.dashboard {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+    flex-grow: 1; /* Makes sure the dashboard grows to fill available space */
+}
+
+/* Header Styles */
+.dashboard-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.dashboard-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-text);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.dashboard-header p {
+    font-size: 1.25rem;
+    color: var(--secondary-text);
+    opacity: 0.9;
+}
+
+/* Grid for the cards */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Individual dashboard card */
+.dashboard-card {
+    background-color: var(--secondary-bg);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px var(--card-shadow);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px var(--card-shadow-hover);
+    border-color: var(--accent-color);
+}
+
+.dashboard-card h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-color);
+}
+
+.dashboard-card p {
+    color: var(--secondary-text);
+    margin-bottom: 1rem;
+    opacity: 0.8;
+}
+
+.dashboard-card a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--accent-color);
+    border-radius: 2rem;
+}
+
+.dashboard-card a:hover {
+    background-color: var(--accent-color);
+    color: var(--primary-bg);
+}
+
+/* Chat Icon Styles */
+.chat-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--accent-color);
+    color: var(--primary-text);
+    padding: 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.chat-icon:hover {
+    transform: scale(1.1);
+}
+
+/* Unread Count Styles */
+#unreadCount {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: #e74c3c;
+    color: var(--primary-text);
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+}
+
+/* Chat Modal Styles */
+#chatModal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    height: 70%;
+    background-color: var(--secondary-bg);
+    border: 1px solid #444;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+.close {
+    color: var(--secondary-text);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: var(--primary-text);
+}
+
+/* Chat List */
+#chatList {
+    height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+    border-bottom: 1px solid #2c2b2b;
+}
+
+#chatMessages {
+    height: 200px;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+/* Chat Input */
+#chatInput {
+    width: 70%;
+    padding: 10px;
+    margin: 10px;
+    background-color: var(--primary-bg);
+    color: white;
+    border: 1px solid #444;
+    border-radius: 5px;
+}
+
+#sendMessage {
+    width: 20%;
+    padding: 10px;
+    margin: 10px 10px 10px 0;
+    background-color: var(--accent-color);
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .dashboard-header h1 {
+        font-size: 1.75rem;
+    }
+
+    .dashboard-header p {
+        font-size: 1rem;
+    }
+
+    .dashboard-card h2 {
+        font-size: 1.2rem;
+    }
+
+    #chatModal {
+        width: 80%;
+        height: 60%;
+    }
+}
+
+</style>
+
+<% if (successMessage.length > 0) { %>
+    <div class="flash-message success">
+        <%= successMessage %>
+    </div>
+<% } %>
+<% if (errorMessage.length) { %>
+    <div class="flash-message error">
+        <%= errorMessage %>
+    </div>
+<% } %>
+  
+<!--views/users/jobSeeker_dashboard.ejs-->
+<div class="dashboard">
+    <div class="dashboard-header">
+        <h1>Dashboard</h1>
+        <p>Welcome back! Here's an overview of your job search journey.</p>
+    </div>
+    <div class="dashboard-grid">
+        <div class="dashboard-card">
+            <h2>Notifications</h2>
+            <p>Here are your notifications</p>
+            <a href="/notifications">View all notifications</a>
+        </div>
+        <div class="dashboard-card">
+            <h2>Jobs Applied</h2>
+            <p>You've applied to these jobs</p>
+            <a href="/viewAllApplications"">View your applications</a>
+        </div>
+
+            <div class=" dashboard-card">
+                <h2>Explore Jobs</h2>
+                <p>Exciting opportunities await you.</p>
+
+                <a href="/job/viewJob">Explore jobs</a>
+        </div>
+        <div class="dashboard-card">
+            <h2>Profile Status</h2>
+            <p>Complete your Profile to increase your chances of getting hired.</p>
+            <a href="/profile">Complete your profile</a>
+        </div>
+    </div>
+
+
+</div>
+<!--I want that each chat button placed on ech job card when clicked is opened and enbles the user to send message to the employer that posted that job  and on employer dashboard there is an icon on bottom right corner that shows the unread msgs  in the form of numbers on that icon and when click onthat icon a chat appears that shows the msgs and in response enable the employer to respond to that msgs by using ejs,node,express,socket.io-->

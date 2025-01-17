@@ -1,0 +1,227 @@
+<style>
+     .checkbox-grid {
+        color:white;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 1rem;
+        padding: 1rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.5rem;
+        max-height: 200px;
+        overflow-y: auto;
+        background-color: white;
+    }
+  
+    .checkbox-grid label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: normal;
+        font-size: 0.875rem;
+        padding: 0.25rem;
+        transition: background-color 0.3s;
+    }
+
+    .checkbox-grid input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        margin: 0;
+        cursor: pointer;
+    }
+  
+    .checkbox-grid label:hover {
+        background-color: #1a1a1a;
+        color: wheat;
+        border-radius: 0.5rem;
+    }
+</style>
+<% if (successMessage.length > 0) { %>
+  <div class="flash-message success">
+      <%= successMessage %>
+  </div>
+<% } %>
+<% if (errorMessage.length) { %>
+  <div class="flash-message error">
+      <%= errorMessage %>
+  </div>
+<% } %>
+
+
+<div class="profile-container">
+  <% if (user) { %>
+    <div class="profile-info">
+      <h2>Profile Information</h2>
+      <div class="info-group">
+        <label>Name:</label>
+        <p><%= user.name %></p>
+      </div>
+      <div class="info-group">
+        <label>Email:</label>
+        <p><%= user.email %></p>
+      </div>
+      <div class="info-group">
+        <label>Role:</label>
+        <p><%= user.role %></p>
+      </div>
+      <% if (user.keywords && user.keywords.length > 0) { %>
+        <div class="info-group">
+          <label>Keywords:</label>
+          <p><%= user.keywords.join(', ') %></p>
+        </div>
+      <% } %>
+    </div>
+
+    <h3>Update Profile</h3>
+    <form action="/users/profile/<%= user._id %>" method="POST" class="update-form" >
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" value="<%= user.name %>" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" value="<%= user.email %>" required>
+      </div>
+
+      <div class="form-group">
+        <label for="role">Role:</label>
+        <select style="color: black; background-color: white;" name="role" id="role" onchange="toggleKeywords(this.value)" required>
+          <option value="job_seeker" <%= user.role === 'job_seeker' ? 'selected' : '' %>>Job Seeker</option>
+          <option value="employer" <%= user.role === 'employer' ? 'selected' : '' %>>Employer</option>
+          <option value="admin" <%= user.role === 'admin' ? 'selected' : '' %>>Admin</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Keywords:</label>
+        <div class="checkbox-grid">
+          <% const keywordsList =[
+          "Software Engineer",
+          "Data Scientist",
+          "UI/UX Designer",
+          "DevOps Engineer",
+          "Cybersecurity Analyst",
+          "Database Administrator",
+          "Registered Nurse",
+          "Healthcare Administrator",
+          "Financial Analyst",
+          "Accountant",
+          "High School Teacher",
+          "Education Consultant",
+          "Production Supervisor",
+          "Supply Chain Analyst",
+          "Store Manager",
+          "Customer Service Representative",
+          "Graphic Designer",
+          "Content Writer",
+          "Research Scientist",
+          "HR Specialist"
+          ];%>
+        <% keywordsList.forEach(keyword => { %>
+            <label>
+              <input type="checkbox" name="keywords" value="<%= keyword %>" <%= user.keywords && user.keywords.includes(keyword) ? 'checked' : '' %>>
+              <%= keyword %>
+            </label>
+          <% }) %>
+        </div>
+        <small style="color: black;">Select multiple keywords by checking the boxes.</small>
+    </div>
+    
+
+    <div class="form-group">
+      <button class="btn "  style="background-color: #0047b6; color: white;">Edit Record</button>
+  </div>
+    </form>
+  <% } else { %>
+    <p>User information is not available. Please <a href="/login">login</a> to view your profile.</p>
+  <% } %>
+</div>
+
+<style>
+  .checkbox-scroll-container {
+    max-height: 150px; /* Set a maximum height for the container */
+    overflow-y: auto; /* Enable vertical scrolling */
+    border: 1px solid black; /* Optional: Add a border */
+    padding: 10px; /* Optional: Add some padding */
+    border-radius: 4px; /* Optional: Rounded corners */
+    background-color: white; /* Optional: Background color */
+}
+
+.checkbox-scroll-container label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: black;
+}
+   .profile-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .profile-info h2 {
+    color: var(--accent-color);
+    margin-bottom: 1.5rem;
+  }
+
+  .info-group {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 1rem;
+    align-items: baseline;
+  }
+
+  .info-group label {
+    font-weight: 600;
+    color: black;
+  }
+
+  .info-group p {
+    margin: 0;
+    color: black;
+  }
+
+  .update-form {
+    margin-top: 2rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
+
+  .form-group label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: black;
+  }
+
+  .form-group input {
+    padding: 0.5rem;
+    border: 1px solid black;
+    border-radius: 4px;
+    background-color: white;
+    color: black;
+  }
+
+  .btn {
+    padding: 0.7rem 1.5rem;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .btn:hover {
+    background-color: darken(var(--accent-color), 10%);
+  }
+</style>

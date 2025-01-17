@@ -1,0 +1,96 @@
+<div>
+    <h2>Application Form</h2>
+    <br><br>
+    <form id="applicationForm" action="/application/post" method="post" class="form-group">
+      <!-- Name -->
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" placeholder="Enter your name" required>
+      <span id="name-error" class="error-message"></span>
+  
+      <!-- Email -->
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email" required>
+      <span id="email-error" class="error-message"></span>
+  
+      <!-- Phone -->
+      <label for="phone">Phone</label>
+      <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+      <span id="phone-error" class="error-message"></span>
+  
+      <!-- Address -->
+      <label for="address">Address</label>
+      <input type="text" id="address" name="address" placeholder="Enter your address" required>
+      <span id="address-error" class="error-message"></span>
+  
+      <!-- Cover Letter -->
+      <label for="coverLetter">Cover Letter</label>
+      <textarea id="coverLetter" name="coverLetter" rows="5" placeholder="Write your cover letter here" required></textarea>
+      <span id="coverLetter-error" class="error-message"></span>
+  
+      <!-- Submit Button -->
+      <button type="submit">Submit Application</button>
+    </form>
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const form = document.getElementById('applicationForm');
+  
+      // Dynamically update the form's action URL with the job ID
+      const currentUrl = window.location.pathname; // e.g., "/job/123"
+      const jobId = currentUrl.split('/').pop(); // Extract the job ID
+      form.action = `/application/post/${jobId}`; // Append the job ID to the form action
+  
+      // Form submit handler
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+  
+        if (validateForm()) {
+          const formData = new FormData(form);
+          const formValues = Object.fromEntries(formData.entries());
+  
+          try {
+            const response = await fetch(form.action, {
+              method: form.method,
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(formValues),
+            });
+  
+            const result = await response.json();
+            if (response.ok) {
+              alert("Application submitted successfully!");
+              form.reset();
+            } else {
+              alert(result.message || "An error occurred while submitting the application.");
+            }
+          } catch (error) {
+            console.error("Error submitting form:", error);
+            alert("Failed to submit the application. Please try again.");
+          }
+        }
+      });
+  
+      // Field validation
+      function validateForm() {
+        let isValid = true;
+  
+        const requiredFields = ["name", "email", "phone", "address", "coverLetter"];
+  
+        requiredFields.forEach((field) => {
+          const input = document.getElementById(field);
+          const errorMessage = document.getElementById(`${field}-error`);
+  
+          if (input.value.trim() === "") {
+            errorMessage.textContent = "This field is required.";
+            input.classList.add("error-input");
+            isValid = false;
+          } else {
+            errorMessage.textContent = "";
+            input.classList.remove("error-input");
+          }
+        });
+  
+        return isValid;
+      }
+    });
+  </script>        

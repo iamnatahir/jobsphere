@@ -1,0 +1,94 @@
+<!--views/notifications/notifications-->
+<div class="notifications">
+    <h1>Your Notifications</h1>
+    <% if (notifications.length> 0) { %>
+        <div class="notification-list">
+            <% notifications.forEach(notification=> { %>
+                <div class="notification-card">
+                    <% if (notification.job) { %>
+                        <a href="/job/<%= notification.job._id %>" class="notification-link">
+                            <div class="notification-message">
+                                <p>
+                                    <%= notification.message %>
+                                </p>
+                            </div>
+                            <div class="notification-meta">
+                                <small>Received: <%= new Date(notification.createdAt).toLocaleString() %></small>
+                            </div>
+                        </a>
+                        <% } else { %>
+                            <div class="notification-message">
+                                <p>
+                                    <%= notification.message %>
+                                </p>
+                                <div class="notification-meta">
+                                    <small>Received: <%= new Date(notification.createdAt).toLocaleString() %></small>
+                                </div>
+                            </div>
+                            <% } %>
+                </div>
+                <% }); %>
+        </div>
+        <% } else { %>
+            <p>No notifications found.</p>
+            <% } %>
+</div>
+
+
+<style>
+    .notifications {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 10px;
+        font-family: Arial, sans-serif;
+    }
+
+    h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .notification-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
+
+    .notification-link:hover .notification-card {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .notification-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .notification-card {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s;
+    }
+
+    .notification-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .notification-message {
+        font-size: 16px;
+        font-weight: 500;
+        color: #333;
+    }
+
+    .notification-meta {
+        margin-top: 10px;
+        font-size: 12px;
+        color: #666;
+    }
+</style>
